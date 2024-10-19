@@ -1,4 +1,6 @@
-import AccountsTable from "~/components/dashboard/accounts-table";
+"use server";
+
+import AccountsData from "~/components/dashboard/accounts-data";
 
 const Dashboard = async () => {
   const res = await fetch("http://localhost:3000/api/accounts/", {
@@ -10,8 +12,9 @@ const Dashboard = async () => {
   }
 
   const accounts = await res.json();
+  console.log({ accounts });
 
-  return <AccountsTable accounts={accounts} />;
+  return <AccountsData accounts={accounts} />;
 };
 
 export default Dashboard;

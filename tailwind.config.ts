@@ -1,27 +1,21 @@
 import { type Config } from "tailwindcss";
-import { fontFamily, colors } from "tailwindcss/defaultTheme";
+import { fontFamily, colors as defaultColors } from "tailwindcss/defaultTheme";
 
-const defaultColors = colors;
-
-export default {
+const config: Config = {
   content: ["./src/**/*.tsx"],
   theme: {
-    colors: {
-      ...defaultColors,
-      transparent: "transparent",
-      current: "currentColor",
-      white: "#F9F7F7",
-      lightgrey: "#DBE2EF",
-      black: "#000000",
-      primary: "#112D4E",
-      secondary: "#3F72AF",
-      hover: "#2b4d77",
-    },
     extend: {
+      colors: {
+        ...defaultColors, // Spreading the entire default color palette
+        white: "#F9F7F7",
+        background: "#101827",
+      },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+
+export default config;
