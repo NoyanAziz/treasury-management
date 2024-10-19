@@ -1,5 +1,3 @@
-"use server";
-
 import AccountsData from "~/components/dashboard/accounts-data";
 
 const Dashboard = async () => {
