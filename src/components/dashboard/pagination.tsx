@@ -1,6 +1,6 @@
 "use client";
 
-const LIMIT = 10;
+import { ACCOUNT_TABLE_LIMIT } from "~/constants";
 
 const TablePagination = ({
   totalPages,
@@ -21,16 +21,18 @@ const TablePagination = ({
       className="flex-column flex flex-wrap items-center justify-between pt-4 md:flex-row"
       aria-label="Table navigation"
     >
-      <span className="text-gray-500 dark:text-gray-400 mb-4 block w-full text-sm font-normal md:mb-0 md:inline md:w-auto">
+      <span className="mb-4 block w-full text-sm font-normal text-gray-500 md:mb-0 md:inline md:w-auto dark:text-gray-400">
         Showing{" "}
-        <span className="text-gray-900 font-semibold dark:text-white">
-          {`${Math.floor(currentPage / LIMIT) * LIMIT + 1} - ${Math.min(
-            Math.floor((currentPage + LIMIT) / LIMIT) * LIMIT,
+        <span className="font-semibold text-gray-900 dark:text-white">
+          {`${Math.floor(currentPage / ACCOUNT_TABLE_LIMIT) * ACCOUNT_TABLE_LIMIT + 1} - ${Math.min(
+            Math.floor(
+              (currentPage + ACCOUNT_TABLE_LIMIT) / ACCOUNT_TABLE_LIMIT,
+            ) * ACCOUNT_TABLE_LIMIT,
             totalPages,
           )}`}
         </span>{" "}
         of{" "}
-        <span className="text-gray-900 font-semibold dark:text-white">
+        <span className="font-semibold text-gray-900 dark:text-white">
           {totalPages}
         </span>
       </span>
@@ -43,7 +45,7 @@ const TablePagination = ({
             className={`ms-0 flex h-8 items-center justify-center rounded-s-lg border px-3 leading-tight ${
               currentPage === 1
                 ? "text-gray-300 dark:bg-gray-800 dark:text-gray-600"
-                : "text-gray-500 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 hover:text-gray-700"
+                : "text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
             }`}
           >
             Previous
@@ -51,9 +53,12 @@ const TablePagination = ({
         </li>
 
         {/* Pagination Range */}
-        {[...Array(LIMIT)].map((_, index) => {
+        {[...Array(ACCOUNT_TABLE_LIMIT)].map((_, index) => {
           const pageNumber =
-            Math.floor((currentPage - 1) / LIMIT) * LIMIT + index + 1;
+            Math.floor((currentPage - 1) / ACCOUNT_TABLE_LIMIT) *
+              ACCOUNT_TABLE_LIMIT +
+            index +
+            1;
 
           if (pageNumber > totalPages) return null; // Don't render pages outside of total pages
 
@@ -63,8 +68,8 @@ const TablePagination = ({
                 onClick={() => handlePageChange(pageNumber)}
                 className={`flex h-8 items-center justify-center border px-3 leading-tight ${
                   currentPage === pageNumber
-                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white"
-                    : "text-gray-500 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 hover:text-gray-700"
+                    ? "bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white"
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
                 }`}
               >
                 {pageNumber}
@@ -81,7 +86,7 @@ const TablePagination = ({
             className={`flex h-8 items-center justify-center rounded-e-lg border px-3 leading-tight ${
               currentPage === totalPages
                 ? "text-gray-300 dark:bg-gray-800 dark:text-gray-600"
-                : "text-gray-500 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 hover:text-gray-700"
+                : "text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
             }`}
           >
             Next

@@ -6,8 +6,7 @@ import { Account } from "~/types";
 import TablePagination from "./pagination";
 import { useMemo, useState } from "react";
 import PaymentForm from "./payment-form";
-
-const LIMIT = 10;
+import { ACCOUNT_TABLE_LIMIT } from "~/constants";
 
 const AccountData = ({ accounts }: { accounts: Account[] }) => {
   const searchParams = useSearchParams();
@@ -16,10 +15,10 @@ const AccountData = ({ accounts }: { accounts: Account[] }) => {
   const [currentPage, setCurrentPage] = useState(page);
   const [isOpen, setIsOpen] = useState(false);
 
-  const offset = (currentPage - 1) * LIMIT;
+  const offset = (currentPage - 1) * ACCOUNT_TABLE_LIMIT;
 
   const paginatedAccounts = useMemo(() => {
-    return accounts.slice(offset, offset + LIMIT);
+    return accounts.slice(offset, offset + ACCOUNT_TABLE_LIMIT);
   }, [accounts, currentPage]);
 
   return (
@@ -29,15 +28,15 @@ const AccountData = ({ accounts }: { accounts: Account[] }) => {
         <button
           onClick={() => setIsOpen(true)}
           type="button"
-          className="bg-gray-800 hover:bg-gray-900 focus:ring-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 mb-2 me-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4"
+          className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Send Money
         </button>
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="text-gray-500 dark:text-gray-400 w-full text-left text-sm rtl:text-right">
-          <thead className="text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-xs uppercase">
+        <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Account Number
@@ -54,11 +53,11 @@ const AccountData = ({ accounts }: { accounts: Account[] }) => {
             {paginatedAccounts.map((account) => (
               <tr
                 key={account.accountNumber}
-                className="dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-b bg-white"
+                className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
                 <th
                   scope="row"
-                  className="text-gray-900 whitespace-nowrap px-6 py-4 font-medium dark:text-white"
+                  className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
                 >
                   {account.accountNumber}
                 </th>

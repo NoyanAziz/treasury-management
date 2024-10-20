@@ -1,7 +1,7 @@
 import AccountsData from "~/components/dashboard/accounts-data";
 
 const Dashboard = async () => {
-  const res = await fetch("http://localhost:3000/api/accounts/", {
+  const res = await fetch(`${process.env.NEXT_ROOT_URL}/api/accounts/`, {
     cache: "no-store",
   });
 
