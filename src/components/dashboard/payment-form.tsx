@@ -1,6 +1,23 @@
 "use client";
 
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { CURRENCY_OPTIONS } from "~/constants";
+
+const validationSchema = Yup.object({
+  payerAccount: Yup.string()
+    .required("Payer account is required")
+    .length(16, "Account number must be 16 digits"),
+  payeeAccount: Yup.string()
+    .required("Payee account is required")
+    .length(16, "Account number must be 16 digits"),
+  amount: Yup.number()
+    .min(1, "Amount must be greater than 0")
+    .required("Amount is required"),
+  currency: Yup.string()
+    .oneOf(CURRENCY_OPTIONS, "Invalid currency")
+    .required("Currency is required"),
+});
 
 const PaymentForm = ({
   isOpen,
@@ -9,6 +26,21 @@ const PaymentForm = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const formik = useFormik({
+    initialValues: {
+      payerAccount: "",
+      payeeAccount: "",
+      amount: "",
+      currency: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log("Form values", values);
+      formik.resetForm();
+      onClose();
+    },
+  });
+
   return (
     <>
       {isOpen && (
@@ -48,81 +80,115 @@ const PaymentForm = ({
                 </button>
               </div>
 
-              <form className="p-4 md:p-5">
+              <form className="p-4 md:p-5" onSubmit={formik.handleSubmit}>
                 <div className="mb-4 grid grid-cols-2 gap-4">
                   <div className="col-span-2">
                     <label
-                      htmlFor="name"
+                      htmlFor="payerAccount"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Payer account
                     </label>
                     <input
                       type="text"
-                      name="name"
-                      id="name"
+                      name="payerAccount"
+                      id="payerAccount"
                       className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                       placeholder="i.e 4242424242424242"
-                      required
+                      value={formik.values.payerAccount}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      maxLength={16}
                     />
+                    {formik.touched.payerAccount &&
+                      formik.errors.payerAccount && (
+                        <div className="text-sm text-red-500">
+                          {formik.errors.payerAccount}
+                        </div>
+                      )}
                   </div>
+
                   <div className="col-span-2">
                     <label
-                      htmlFor="name"
+                      htmlFor="payeeAccount"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Payee account
                     </label>
                     <input
                       type="text"
-                      name="name"
-                      id="name"
+                      name="payeeAccount"
+                      id="payeeAccount"
                       className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                       placeholder="i.e 4242424242424242"
-                      required
+                      value={formik.values.payeeAccount}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                     />
+                    {formik.touched.payeeAccount &&
+                      formik.errors.payeeAccount && (
+                        <div className="text-sm text-red-500">
+                          {formik.errors.payeeAccount}
+                        </div>
+                      )}
                   </div>
+
                   <div className="col-span-2 sm:col-span-1">
                     <label
-                      htmlFor="price"
+                      htmlFor="amount"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Amount
                     </label>
                     <input
                       type="number"
-                      name="price"
-                      id="price"
+                      name="amount"
+                      id="amount"
                       className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                       placeholder="i.e 1000"
-                      required
+                      value={formik.values.amount}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                     />
+                    {formik.touched.amount && formik.errors.amount && (
+                      <div className="text-sm text-red-500">
+                        {formik.errors.amount}
+                      </div>
+                    )}
                   </div>
+
                   <div className="col-span-2 sm:col-span-1">
                     <label
-                      htmlFor="category"
+                      htmlFor="currency"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Currency
                     </label>
                     <select
-                      id="category"
+                      id="currency"
+                      name="currency"
                       className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
-                      required
+                      value={formik.values.currency}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                     >
-                      <option value="">Select category</option>
+                      <option value="">Select currency</option>
                       {CURRENCY_OPTIONS.map((option) => (
                         <option key={option} value={option}>
                           {option}
                         </option>
                       ))}
                     </select>
+                    {formik.touched.currency && formik.errors.currency && (
+                      <div className="text-sm text-red-500">
+                        {formik.errors.currency}
+                      </div>
+                    )}
                   </div>
                 </div>
+
                 <button
-                  onClick={() => {
-                    onClose();
-                  }}
+                  type="submit"
                   className="my-4 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-3 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Submit
