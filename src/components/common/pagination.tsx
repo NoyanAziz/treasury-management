@@ -56,7 +56,6 @@ const TablePagination = ({
             index +
             1;
 
-          console.log(pageNumber, totalPages);
           if (pageNumber > totalPages) {
             return null;
           }

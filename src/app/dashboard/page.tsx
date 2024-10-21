@@ -10,7 +10,6 @@ const Dashboard = async () => {
   }
 
   const accounts = await res.json();
-  console.log({ accounts });
 
   return <AccountsData accounts={accounts} />;
 };
