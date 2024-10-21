@@ -26,3 +26,24 @@ export async function GET() {
 
   return NextResponse.json(mockAccounts);
 }
+
+export async function POST(request: Request) {
+  const { payerAccount, payeeAccount, amount, currency } = await request.json();
+
+  if (!payerAccount || !payeeAccount || !amount || !currency) {
+    return NextResponse.json(
+      { message: "Missing required fields" },
+      { status: 400 },
+    );
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  return NextResponse.json({
+    status: 201,
+    data: {
+      transactionId: Math.random().toString(36).substring(2, 15),
+    },
+    message: "Account created successfully",
+  });
+}

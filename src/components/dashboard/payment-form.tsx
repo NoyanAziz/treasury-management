@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormik } from "formik";
+import { toast } from "sonner";
 import * as Yup from "yup";
 import { CURRENCY_OPTIONS } from "~/helpers/constants";
 
@@ -34,23 +35,46 @@ const PaymentForm = ({
       currency: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
-      const res = await fetch(`${process.env.NEXT_ROOT_URL}/api/transactions`, {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    onSubmit: (values) => {
+      try {
+        toast.promise(
+          fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/accounts/`, {
+            method: "POST",
+            body: JSON.stringify(values),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }),
+          {
+            loading: "Initiating payment...",
+            success: async (response) => {
+              if (!response.ok) {
+                throw new Error(
+                  `Failed to initiate payment. Status: ${response.status}`,
+                );
+              }
+              const data = await response.json();
+              console.log(data, response.ok);
 
-      if (!res.ok) {
-        alert("Failed to initiate payment");
-      } else {
-        alert("Payment initiated successfully");
+              return `Payment initiated successfully. Transaction ID: ${data.transactionId}`;
+            },
+            error: (error: Error) => {
+              return error instanceof Error
+                ? error.message
+                : "Failed to initiate payment.";
+            },
+          },
+        );
+
+        formik.resetForm();
+        onClose();
+      } catch (error) {
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred while initiating payment.",
+        );
       }
-
-      formik.resetForm();
-      onClose();
     },
   });
 

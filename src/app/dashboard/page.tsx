@@ -14,8 +14,12 @@ const Dashboard = async () => {
     }
 
     accounts = await res.json();
-  } catch (error: { message: string } | any) {
-    throw new Error("Could not load account data.");
+  } catch (error) {
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "An unexpected error occurred while fetching accounts.",
+    );
   }
 
   return <AccountsData accounts={accounts} />;

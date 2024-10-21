@@ -44,8 +44,12 @@ const TransactionsData = () => {
 
       const data = await res.json();
       setTransactions(data);
-    } catch (error: { message: string } | any) {
-      toast.error(error.message);
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred while fetching transaction history.",
+      );
     } finally {
       setLoading(false);
     }
