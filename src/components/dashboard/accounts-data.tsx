@@ -1,34 +1,38 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 
 import { Account } from "~/types";
-import TablePagination from "./pagination";
+import TablePagination from "../common/pagination";
 import { useMemo, useState } from "react";
 import PaymentForm from "./payment-form";
-import { ACCOUNT_TABLE_LIMIT } from "~/constants";
+import { TABLE_LIMIT } from "~/helpers/constants";
 
 const AccountData = ({ accounts }: { accounts: Account[] }) => {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page") ?? "1");
 
+  if (page < 1 || page > accounts.length / TABLE_LIMIT) {
+    notFound();
+  }
+
   const [currentPage, setCurrentPage] = useState(page);
   const [isOpen, setIsOpen] = useState(false);
 
-  const offset = (currentPage - 1) * ACCOUNT_TABLE_LIMIT;
+  const offset = (currentPage - 1) * TABLE_LIMIT;
 
   const paginatedAccounts = useMemo(() => {
-    return accounts.slice(offset, offset + ACCOUNT_TABLE_LIMIT);
+    return accounts.slice(offset, offset + TABLE_LIMIT);
   }, [accounts, currentPage]);
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between">
         <h1 className="mb-6 text-3xl text-white">Bank Balances</h1>
         <button
           onClick={() => setIsOpen(true)}
           type="button"
-          className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
           Send Money
         </button>
@@ -67,11 +71,13 @@ const AccountData = ({ accounts }: { accounts: Account[] }) => {
             ))}
           </tbody>
         </table>
-        <TablePagination
-          totalPages={accounts.length}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        {accounts.length > TABLE_LIMIT && (
+          <TablePagination
+            totalPages={accounts.length / TABLE_LIMIT}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
         <PaymentForm isOpen={isOpen} onClose={() => setIsOpen(false)} />
       </div>
     </>

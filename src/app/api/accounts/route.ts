@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
+import { CURRENCY_OPTIONS } from "~/helpers/constants";
 
 export async function GET() {
-  const accountNumberLength = 7;
+  const accountNumberLength = 16;
   const accountNumberChars = "0123456789";
 
   function generateAccountNumber(): string {
@@ -17,7 +18,8 @@ export async function GET() {
   const mockAccounts = Array.from({ length: 1000000 }, () => ({
     accountNumber: generateAccountNumber(),
     balance: Math.floor(Math.random() * 10000),
-    currency: "USD",
+    currency:
+      CURRENCY_OPTIONS[Math.floor(Math.random() * CURRENCY_OPTIONS.length)],
   }));
 
   await new Promise((resolve) => setTimeout(resolve, 1000));

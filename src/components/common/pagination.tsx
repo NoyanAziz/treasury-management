@@ -1,6 +1,6 @@
 "use client";
 
-import { ACCOUNT_TABLE_LIMIT } from "~/constants";
+import { TABLE_LIMIT } from "~/helpers/constants";
 
 const TablePagination = ({
   totalPages,
@@ -24,10 +24,8 @@ const TablePagination = ({
       <span className="mb-4 block w-full text-sm font-normal text-gray-500 md:mb-0 md:inline md:w-auto dark:text-gray-400">
         Showing{" "}
         <span className="font-semibold text-gray-900 dark:text-white">
-          {`${Math.floor(currentPage / ACCOUNT_TABLE_LIMIT) * ACCOUNT_TABLE_LIMIT + 1} - ${Math.min(
-            Math.floor(
-              (currentPage + ACCOUNT_TABLE_LIMIT) / ACCOUNT_TABLE_LIMIT,
-            ) * ACCOUNT_TABLE_LIMIT,
+          {`${Math.floor(currentPage / TABLE_LIMIT) * TABLE_LIMIT + 1} - ${Math.min(
+            Math.floor((currentPage + TABLE_LIMIT) / TABLE_LIMIT) * TABLE_LIMIT,
             totalPages,
           )}`}
         </span>{" "}
@@ -52,15 +50,16 @@ const TablePagination = ({
           </button>
         </li>
 
-        {/* Pagination Range */}
-        {[...Array(ACCOUNT_TABLE_LIMIT)].map((_, index) => {
+        {[...Array(TABLE_LIMIT)].map((_, index) => {
           const pageNumber =
-            Math.floor((currentPage - 1) / ACCOUNT_TABLE_LIMIT) *
-              ACCOUNT_TABLE_LIMIT +
+            Math.floor((currentPage - 1) / TABLE_LIMIT) * TABLE_LIMIT +
             index +
             1;
 
-          if (pageNumber > totalPages) return null; // Don't render pages outside of total pages
+          console.log(pageNumber, totalPages);
+          if (pageNumber > totalPages) {
+            return null;
+          }
 
           return (
             <li key={pageNumber}>
@@ -78,7 +77,6 @@ const TablePagination = ({
           );
         })}
 
-        {/* Next Button */}
         <li>
           <button
             onClick={() => handlePageChange(currentPage + 1)}

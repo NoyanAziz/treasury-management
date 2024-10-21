@@ -2,7 +2,7 @@
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { CURRENCY_OPTIONS } from "~/constants";
+import { CURRENCY_OPTIONS } from "~/helpers/constants";
 
 const validationSchema = Yup.object({
   payerAccount: Yup.string()
