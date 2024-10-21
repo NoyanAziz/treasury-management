@@ -54,21 +54,29 @@ const AccountData = ({ accounts }: { accounts: Account[] }) => {
             </tr>
           </thead>
           <tbody>
-            {paginatedAccounts.map((account) => (
-              <tr
-                key={account.accountNumber}
-                className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-              >
-                <th
-                  scope="row"
-                  className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+            {paginatedAccounts.length > 0 ? (
+              paginatedAccounts.map((account) => (
+                <tr
+                  key={account.accountNumber}
+                  className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                 >
-                  {account.accountNumber}
-                </th>
-                <td className="px-6 py-4">{account.balance}</td>
-                <td className="px-6 py-4">{account.currency}</td>
+                  <th
+                    scope="row"
+                    className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                  >
+                    {account.accountNumber}
+                  </th>
+                  <td className="px-6 py-4">{account.balance}</td>
+                  <td className="px-6 py-4">{account.currency}</td>
+                </tr>
+              ))
+            ) : (
+              <tr className="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
+                <td colSpan={6} className="px-6 py-4 text-center">
+                  No accounts found
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
         {accounts.length > TABLE_LIMIT && (

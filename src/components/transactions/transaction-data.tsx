@@ -108,26 +108,34 @@ const TransactionsData = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedTransactions.map((transaction) => (
-                  <tr
-                    key={transaction.transactionId}
-                    className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                  >
-                    <td className="px-6 py-4">{transaction.transactionId}</td>
-                    <th
-                      scope="row"
-                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                {paginatedTransactions.length > 0 ? (
+                  paginatedTransactions.map((transaction) => (
+                    <tr
+                      key={transaction.transactionId}
+                      className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                     >
-                      {transaction.payerAccount}
-                    </th>
-                    <td className="px-6 py-4">{transaction.payeeAccount}</td>
-                    <td className="px-6 py-4">{transaction.amount}</td>
-                    <td className="px-6 py-4">{transaction.currency}</td>
-                    <td className="px-6 py-4">
-                      {displayTimestamp(transaction.timestamp)}
+                      <td className="px-6 py-4">{transaction.transactionId}</td>
+                      <th
+                        scope="row"
+                        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                      >
+                        {transaction.payerAccount}
+                      </th>
+                      <td className="px-6 py-4">{transaction.payeeAccount}</td>
+                      <td className="px-6 py-4">{transaction.amount}</td>
+                      <td className="px-6 py-4">{transaction.currency}</td>
+                      <td className="px-6 py-4">
+                        {displayTimestamp(transaction.timestamp)}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr className="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
+                    <td colSpan={6} className="px-6 py-4 text-center">
+                      No transactions found
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
             {transactions.length > TABLE_LIMIT && (
