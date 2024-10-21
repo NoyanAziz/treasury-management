@@ -44,6 +44,5 @@ export async function POST(request: Request) {
     data: {
       transactionId: Math.random().toString(36).substring(2, 15),
     },
-    message: "Account created successfully",
   });
 }

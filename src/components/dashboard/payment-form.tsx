@@ -54,7 +54,7 @@ const PaymentForm = ({
                 );
               }
 
-              const data = await response.json();
+              const { data } = await response.json();
               return `Payment initiated successfully. Transaction ID: ${data.transactionId}`;
             },
             error: (error: Error) => {
@@ -133,7 +133,7 @@ const PaymentForm = ({
                       placeholder="i.e 4242424242424242"
                       value={formik.values.payerAccount}
                       onChange={(e) => {
-                        formik.setFieldValue("payeeAccount", e.target.value);
+                        formik.setFieldValue("payerAccount", e.target.value);
                       }}
                       onBlur={formik.handleBlur}
                       maxLength={16}
