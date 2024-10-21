@@ -53,9 +53,8 @@ const PaymentForm = ({
                   `Failed to initiate payment. Status: ${response.status}`,
                 );
               }
-              const data = await response.json();
-              console.log(data, response.ok);
 
+              const data = await response.json();
               return `Payment initiated successfully. Transaction ID: ${data.transactionId}`;
             },
             error: (error: Error) => {
