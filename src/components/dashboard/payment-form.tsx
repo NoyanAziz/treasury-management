@@ -132,7 +132,9 @@ const PaymentForm = ({
                       className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                       placeholder="i.e 4242424242424242"
                       value={formik.values.payerAccount}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue("payeeAccount", e.target.value);
+                      }}
                       onBlur={formik.handleBlur}
                       maxLength={16}
                     />
@@ -158,7 +160,9 @@ const PaymentForm = ({
                       className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                       placeholder="i.e 4242424242424242"
                       value={formik.values.payeeAccount}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue("payeeAccount", e.target.value);
+                      }}
                       onBlur={formik.handleBlur}
                     />
                     {formik.touched.payeeAccount &&
@@ -183,7 +187,9 @@ const PaymentForm = ({
                       className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                       placeholder="i.e 1000"
                       value={formik.values.amount}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue("amount", e.target.value);
+                      }}
                       onBlur={formik.handleBlur}
                     />
                     {formik.touched.amount && formik.errors.amount && (
@@ -205,7 +211,9 @@ const PaymentForm = ({
                       name="currency"
                       className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                       value={formik.values.currency}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue("currency", e.target.value);
+                      }}
                       onBlur={formik.handleBlur}
                     >
                       <option value="">Select currency</option>
