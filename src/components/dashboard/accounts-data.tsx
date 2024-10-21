@@ -81,6 +81,7 @@ const AccountData = ({ accounts }: { accounts: Account[] }) => {
         </table>
         {accounts.length > TABLE_LIMIT && (
           <TablePagination
+            searchParams={searchParams}
             totalPages={accounts.length / TABLE_LIMIT}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

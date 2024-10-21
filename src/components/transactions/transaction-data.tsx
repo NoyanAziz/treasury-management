@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound, useSearchParams } from "next/navigation";
+import { notFound, useRouter, useSearchParams } from "next/navigation";
 
 import { Transaction } from "~/types";
 import TablePagination from "../common/pagination";
@@ -10,13 +10,21 @@ import { displayTimestamp } from "~/helpers/utils";
 import TransactionSkeleton from "./skeleton";
 
 const TransactionsData = () => {
+  const { push } = useRouter();
   const searchParams = useSearchParams();
+
   const page = parseInt(searchParams.get("page") ?? "1");
   const account = searchParams.get("account") ?? "";
 
   const [loading, setLoading] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<string>(account);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const handleAccountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const account = event.target.value;
+    setSelectedAccount(account);
+    push(`/transactions?page=1&account=${account}`);
+  };
 
   const fetchTransactions = async (account: string) => {
     setLoading(true);
@@ -71,7 +79,7 @@ const TransactionsData = () => {
                 name="account"
                 className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                 value={selectedAccount}
-                onChange={(e) => setSelectedAccount(e.target.value)}
+                onChange={(event) => handleAccountChange(event)}
               >
                 <option value="">Select account</option>
                 {MOCK_ACCOUNT_NUMBERS.map((option) => (
@@ -140,6 +148,7 @@ const TransactionsData = () => {
             </table>
             {transactions.length > TABLE_LIMIT && (
               <TablePagination
+                searchParams={searchParams}
                 totalPages={transactions.length / TABLE_LIMIT}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}

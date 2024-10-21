@@ -1,18 +1,27 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 import { TABLE_LIMIT } from "~/helpers/constants";
 
 const TablePagination = ({
+  searchParams,
   totalPages,
   currentPage,
   setCurrentPage,
 }: {
+  searchParams: URLSearchParams;
   totalPages: number;
   currentPage: number;
   setCurrentPage: (newPage: number) => void;
 }) => {
+  const pathname = usePathname();
+
   const handlePageChange = (newPage: number) => {
-    window.history.pushState({}, "", `/dashboard?page=${newPage}`);
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("page", newPage.toString());
+
+    window.history.pushState({}, "", `${pathname}?${newSearchParams}`);
     setCurrentPage(newPage);
   };
 
