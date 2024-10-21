@@ -6,7 +6,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ...defaultColors, // Spreading the entire default color palette
+        ...defaultColors,
         white: "#F9F7F7",
         background: "#101827",
       },

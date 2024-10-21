@@ -4,14 +4,16 @@ import { notFound, useRouter, useSearchParams } from "next/navigation";
 
 import { Transaction } from "~/types";
 import TablePagination from "../common/pagination";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MOCK_ACCOUNT_NUMBERS, TABLE_LIMIT } from "~/helpers/constants";
 import { displayTimestamp } from "~/helpers/utils";
 import TransactionSkeleton from "./skeleton";
+import { toast } from "sonner";
 
 const TransactionsData = () => {
   const { push } = useRouter();
   const searchParams = useSearchParams();
+  const prevAccountRef = useRef<string | null>(null);
 
   const page = parseInt(searchParams.get("page") ?? "1");
   const account = searchParams.get("account") ?? "";
@@ -28,24 +30,35 @@ const TransactionsData = () => {
 
   const fetchTransactions = async (account: string) => {
     setLoading(true);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/api/transactions?account=${account}`,
-      {
-        cache: "no-store",
-      },
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch transactions");
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_ROOT_URL}/api/transactions?account=${account}`,
+        {
+          cache: "no-store",
+        },
+      );
+      if (!res.ok) {
+        toast.error("Failed to fetch transactions.");
+      }
+
+      const data = await res.json();
+      setTransactions(data);
+    } catch (error: { message: string } | any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    const data = await res.json();
-    setTransactions(data);
-    setLoading(false);
   };
 
   useEffect(() => {
-    if (selectedAccount) {
+    if (prevAccountRef.current !== selectedAccount && selectedAccount) {
       fetchTransactions(selectedAccount);
-    } else {
+    }
+
+    prevAccountRef.current = selectedAccount;
+
+    if (!selectedAccount) {
       setTransactions([]);
     }
   }, [selectedAccount]);

@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Treasury Management",
@@ -14,7 +15,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable} bg-background`}>
-      <body>{children}</body>
+      <body>
+        <Toaster richColors position="top-right" />
+        {children}
+      </body>
     </html>
   );
 }

@@ -34,8 +34,21 @@ const PaymentForm = ({
       currency: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log("Form values", values);
+    onSubmit: async (values) => {
+      const res = await fetch(`${process.env.NEXT_ROOT_URL}/api/transactions`, {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        alert("Failed to initiate payment");
+      } else {
+        alert("Payment initiated successfully");
+      }
+
       formik.resetForm();
       onClose();
     },

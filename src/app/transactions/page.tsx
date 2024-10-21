@@ -1,6 +1,6 @@
 import TransactionsData from "~/components/transactions/transaction-data";
 
-const Dashboard = async () => {
+const Dashboard = () => {
   return <TransactionsData />;
 };
 
