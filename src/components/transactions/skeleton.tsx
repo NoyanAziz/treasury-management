@@ -1,10 +1,31 @@
-import { TABLE_LIMIT } from "~/helpers/constants";
+import { MOCK_ACCOUNT_NUMBERS, TABLE_LIMIT } from "~/helpers/constants";
 
-const TransactionSkeleton = () => {
+const TransactionSkeleton = ({
+  selectedAccount,
+}: {
+  selectedAccount?: string;
+}) => {
   return (
     <>
       <div className="flex items-start justify-between">
-        <h1 className="mb-6 text-3xl text-white">Transactions</h1>
+        <h1 className="mb-6 text-3xl text-white">Transaction History</h1>
+
+        <div className="col-span-2 sm:col-span-1">
+          <select
+            id="account"
+            name="account"
+            className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+            value={selectedAccount ?? ""}
+            disabled={true}
+          >
+            <option value="">Select account</option>
+            {MOCK_ACCOUNT_NUMBERS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="relative animate-pulse overflow-x-auto shadow-md sm:rounded-lg">

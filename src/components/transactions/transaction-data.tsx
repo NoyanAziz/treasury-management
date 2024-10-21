@@ -60,20 +60,20 @@ const TransactionsData = () => {
   return (
     <>
       {loading ? (
-        <TransactionSkeleton />
+        <TransactionSkeleton selectedAccount={selectedAccount} />
       ) : (
         <>
           <div className="flex items-start justify-between">
-            <h1 className="mb-6 text-3xl text-white">Bank Balances</h1>
+            <h1 className="mb-6 text-3xl text-white">Transaction History</h1>
             <div className="col-span-2 sm:col-span-1">
               <select
-                id="currency"
-                name="currency"
+                id="account"
+                name="account"
                 className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
                 value={selectedAccount}
                 onChange={(e) => setSelectedAccount(e.target.value)}
               >
-                <option value="">Select currency</option>
+                <option value="">Select account</option>
                 {MOCK_ACCOUNT_NUMBERS.map((option) => (
                   <option key={option} value={option}>
                     {option}
